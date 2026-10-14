@@ -1,0 +1,11 @@
+torch>=2.2.0
+torchvision
+transformers>=4.48.0
+accelerate>=0.26.0
+peft>=0.9.0
+bitsandbytes>=0.43.0
+trl>=0.8.0
+pillow>=10.0.0
+Levenshtein>=0.25.0
+scipy>=1.10.0
+pytest>=8.0.0

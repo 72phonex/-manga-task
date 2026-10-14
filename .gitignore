@@ -1,0 +1,29 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+
+# Raw Dataset Images (Do NOT commit images)
+development/images/
+test/images/
+*.jpg
+*.jpeg
+*.png
+*.webp
+
+# Large Model Checkpoints / Weights
+outputs/checkpoint-*/
+*.bin
+*.pt
+
+# Secrets & Environment
+.env
+.env.*
+*.key
+*.pem
