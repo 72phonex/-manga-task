@@ -12,6 +12,7 @@ __pycache__/
 # Raw Dataset Images (Do NOT commit images)
 development/images/
 test/images/
+gdrive_download/
 *.jpg
 *.jpeg
 *.png

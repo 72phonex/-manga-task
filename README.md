@@ -77,7 +77,7 @@ Evaluated on the 16 held-out validation sequences (48 pages) using the official 
 ### Submission Summary (`predictions.jsonl`)
 - **Total Test Sequences**: 15 (matching `sample_submission.jsonl` exactly)
 - **Total Pages**: 45 (3 pages per sequence)
-- **Total Transcribed Speech Bubbles**: 389 dialogue boxes
+- **Total Transcribed Speech Bubbles**: 391 dialogue boxes
 - **Pages with Dialogue**: 27
 - **Empty Pages (Correctly Output as `[]`)**: 18
 - **Official Schema Validation**: Passed 100% via `score.load_jsonl()`
@@ -131,29 +131,66 @@ manga-task/
 ---
 
 ## Approach
-<!-- TODO: write in my own words -->
+
+The core idea is to treat manga transcription as a **multimodal sequence-to-JSON** generation task. I feed all 3 consecutive manga pages as images into a vision-language model (Qwen2.5-VL-3B-Instruct) along with a detailed system prompt specifying reading order rules, inclusion/exclusion criteria, and the exact JSON output schema.
+
+The pipeline has four stages:
+
+1. **Data Exploration & Splitting**: I analyzed the 80 development sequences to understand speaker distributions (average ~6 speakers per sequence), bubble densities (0–19 per page, ~4.2% empty pages), and text lengths. I created a deterministic 64/16 train/val split at the sequence level (seed 42) to ensure no page triplet leaks across splits.
+
+2. **Zero-Shot Baseline**: First, I evaluated the base Qwen2.5-VL-3B model with 4-bit NF4 quantization in a zero-shot setting. The model understood the task format but struggled heavily with manga-specific reading order (right-to-left, top-to-bottom) and frequently transcribed sound effects and environmental text.
+
+3. **QLoRA Fine-Tuning**: I applied 4-bit QLoRA (r=16, alpha=32, targeting q/k/v/o projections) for 2 epochs on the 64 training sequences. The vision encoder was frozen to save VRAM, and gradient checkpointing + mixed-precision bf16 autocast kept memory under 8GB. Training used cosine LR scheduling from 1e-4 to 1e-6 with gradient accumulation of 4.
+
+4. **Post-Processing Harness + Decode Guards**: A rule-based harness filters known SFX words, removes scanlator/meta text patterns, merges broken line wraps, and canonicalizes speaker labels across all 3 pages. The v2 inference pipeline adds a stopping criterion that detects repetition loops mid-generation and retries with sampling (up to 2 retries with increasing temperature).
 
 ---
 
 ## What Worked
-<!-- TODO: write in my own words -->
+
+- **LoRA fine-tuning gave the biggest lift**. Text order score jumped from 0.2035 to 0.2806 (+38% relative) and token coverage from 22.7% to 31.2%. The model learned to follow manga reading order and suppress SFX transcription after seeing just 64 training examples.
+- **4-bit quantization was essential**. NF4 quantization with double quantization allowed both inference and training on an 8GB laptop GPU without meaningful quality loss.
+- **Freezing the vision encoder** during fine-tuning preserved the model's strong OCR capabilities while directing all adapter capacity toward output formatting, reading order, and speaker consistency.
+- **The decode guards** (repetition loop detection + retry with sampling) prevented degenerate outputs where the model would get stuck repeating the same bubble text indefinitely.
+- **Structured JSON repair** in `utils.py` handled common LLM output issues (trailing commas, truncated braces, markdown fence wrapping) robustly enough that no sequence produced an unparseable output.
 
 ---
 
 ## What Failed
-<!-- TODO: write in my own words -->
+
+- **Reading order remains the hardest problem**. The vision encoder's pretrained spatial embeddings have a strong Western left-to-right bias. When two speech bubbles sit at similar vertical coordinates, the model frequently reads left-to-right instead of right-to-left, causing severe Levenshtein distance penalties.
+- **Speaker identity drifts across pages**. As the 3-page context window grows, cross-attention between later pages and earlier speaker labels degrades, causing the model to re-index characters locally per page instead of maintaining a sequence-wide register.
+- **Empty page hallucination**. On dramatic full-page action spreads with no dialogue, the language model's autoregressive prior sometimes generates phantom reaction gasps like "WHAT?!" — this scores 0.0 for that page.
+- **Page boundary confusion**. With 3 large images interleaved, the model occasionally fails to properly delimit page boundaries in the JSON, dumping most dialogue into page 3 while leaving pages 1 and 2 nearly empty.
+- **SFX vs. dialogue ambiguity**. Large onomatopoeia drawn inside decorative burst outlines visually resemble speech bubbles, causing the model to transcribe background sound effects as dialogue despite explicit prompt instructions to exclude them.
 
 ---
 
 ## What I Would Try Next
-<!-- TODO: write in my own words -->
+
+1. **Page-by-page inference with state passing**: Process each page individually at full resolution, carrying forward a speaker registry from prior pages. This eliminates page boundary spillover and allows higher pixel budgets per page.
+2. **Panel detection preprocessing**: Use a dedicated panel segmentation model (e.g., Magi or a YOLO-based detector) to explicitly extract panel bounding boxes and impose right-to-left, top-to-bottom ordering before feeding to the VLM.
+3. **Larger base model**: Qwen2.5-VL-7B with 4-bit quantization should fit in 8GB VRAM and would likely improve both OCR accuracy and reading comprehension significantly.
+4. **Character face clustering**: Extract face embeddings from each page and cluster them to build a persistent visual speaker registry, preventing cross-page identity drift.
+5. **More training epochs + data augmentation**: 2 epochs on 64 sequences is minimal. Training for 5–10 epochs with horizontal flips (simulating reading direction awareness) and random page-order shuffling could help.
+6. **Ensemble decoding**: Generate multiple candidates with different temperatures and use the plausibility checker to select the best one, extending the current retry mechanism.
 
 ---
 
 ## Limitations
-<!-- TODO: write in my own words -->
+
+- **Hardware constraint**: All experiments were limited to a single NVIDIA RTX 5060 Laptop GPU with 8GB VRAM, restricting model size to 3B parameters with 4-bit quantization and limiting per-image resolution to ~500K pixels.
+- **Small training set**: 64 training sequences (192 pages) is very limited for fine-tuning a VLM on a complex multimodal task. The model likely overfits to the specific manga art styles present in the training set.
+- **No OCR specialization**: The pipeline relies entirely on the VLM's built-in OCR capability. A dedicated manga OCR model or text detection stage could significantly improve text extraction accuracy, especially for stylized fonts.
+- **Speaker assignment is unsupervised**: The model assigns arbitrary character labels without any visual grounding — it cannot actually distinguish characters by appearance, only by conversational context and bubble positioning.
+- **Single-language scope**: The pipeline is designed exclusively for English-translated manga. Original Japanese text, mixed-language pages, or non-English translations are not handled.
 
 ---
 
 ## Personal Reflections
-<!-- TODO: write in my own words -->
+
+This task was a fascinating intersection of computer vision, OCR, and structured generation. The biggest surprise was how much LoRA fine-tuning helped with just 64 examples — the base model clearly understood images and text, but needed alignment to learn manga-specific conventions like right-to-left reading order and SFX exclusion.
+
+The most challenging aspect was the tension between transcription completeness and precision. Including more text improves recall but risks transcribing SFX and environmental text; being conservative improves precision but misses legitimate punctuation-only bubbles like "..." and "?!". The scoring metric's balanced F1 formulation means both failure modes are penalized.
+
+Working within the 8GB VRAM constraint forced creative engineering decisions — freezing the vision encoder, aggressive quantization, gradient checkpointing — that ultimately made the pipeline practical for consumer hardware. The fact that a 3B parameter model with LoRA can meaningfully transcribe manga pages at all is a testament to how capable modern open-weight VLMs have become.

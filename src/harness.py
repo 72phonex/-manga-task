@@ -6,10 +6,10 @@ PUNCT_TRANS = str.maketrans({"‘": "'", "’": "'", "“": '"', "”": '"', "�
 
 KNOWN_SFX_WORDS = {
     "thud", "crash", "gulp", "swoosh", "dooon", "bam", "tap", "rattle",
-    "rumble", "click", "clang", "creak", "phew", "pant", "gasp", "wham",
+    "rumble", "click", "clang", "creak", "wham",
     "boom", "kaboom", "clack", "rustle", "sizzle", "splash", "fwip", "shhk",
     "doki", "ba-dump", "badump", "thump", "bonk", "whoosh", "smack", "shing",
-    "clatter", "step", "footsteps", "snicker", "giggle", "sigh", "chuckle",
+    "clatter", "step", "footsteps", 
 }
 
 META_PATTERNS = [
@@ -48,7 +48,9 @@ def is_sfx_or_meta(text: str) -> bool:
         return True
 
     # 4. Check sound effect sound representations (e.g. "BZZZZT", "KABOOOM", "ZZZ")
-    if len(token) >= 3 and len(set(token)) <= 2 and token.isalpha():
+    # Only flag long single-letter runs (e.g. "ZZZZZ"). Short <=2-letter-alphabet words
+    # such as AHH, HUH, HMM, EHHH are spoken vocalizations and must be kept.
+    if len(token) >= 5 and len(set(token)) == 1 and token.isalpha():
         return True
 
     return False

@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Manga Task - Live Interactive Viewer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #f8fafc; padding: 24px; }
+  header { text-align: center; margin-bottom: 28px; }
+  h1 { font-size: 26px; color: #38bdf8; margin-bottom: 8px; }
+  .badge { background: #1e293b; color: #94a3b8; border: 1px solid #334155; padding: 4px 10px; border-radius: 9999px; font-size: 13px; }
+  .grid { display: flex; flex-direction: column; gap: 32px; max-width: 1200px; margin: 0 auto; }
+  .seq-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+  .seq-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 16px; }
+  .seq-title { font-size: 18px; font-weight: 600; color: #e2e8f0; font-family: monospace; }
+  .pages-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .page-box { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px; }
+  .page-title { font-size: 14px; font-weight: 600; color: #38bdf8; margin-bottom: 12px; display: flex; justify-content: space-between; }
+  .bubble { background: #1e293b; border-left: 3px solid #6366f1; padding: 8px 12px; border-radius: 4px; margin-bottom: 8px; font-size: 13px; }
+  .bubble.narration { border-left-color: #f59e0b; }
+  .speaker { font-weight: bold; color: #a5b4fc; font-size: 12px; margin-bottom: 2px; }
+  .bubble.narration .speaker { color: #fcd34d; }
+  .text { color: #f1f5f9; line-height: 1.4; }
+  .empty-note { color: #64748b; font-style: italic; font-size: 13px; text-align: center; padding: 24px 0; }
+  .img-preview { width: 100%; border-radius: 6px; margin-bottom: 12px; border: 1px solid #334155; object-fit: contain; max-height: 250px; background: #000; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Manga Dialogue Extraction & Transcription Demo</h1>
+  <p><span class="badge">Model: Qwen2.5-VL-3B-Instruct + QLoRA Adapter</span> &nbsp; <span class="badge">Decoded with Anti-Repetition Harness</span> &nbsp; <span class="badge">15 Test Sequences</span></p>
+</header>
+<div class="grid">
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #01: seq_6b18300406fa878f</span>
+      <span class="badge">18 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">6 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_6b18300406fa878f/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">TOSS</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">TOSS</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character3</div>
+          <div class="text">TOSS</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character4</div>
+          <div class="text">AOYAMA</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character5</div>
+          <div class="text">KOMABA</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character6</div>
+          <div class="text">OMORI</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_6b18300406fa878f/02.png" alt="Page 2">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">12 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_6b18300406fa878f/03.png" alt="Page 3">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">WHAT!?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I WAS RIGHT</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character3</div>
+          <div class="text">FUKU-RAI</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character4</div>
+          <div class="text">YOU FAKED... WHY!?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character5</div>
+          <div class="text">WHY AREN'T YOU IN CLASS, HACHIKEN?!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character6</div>
+          <div class="text">I FIGURED THAT YOU MIGHT TRY AND SNEAK IN HERE TO GET A GRADE WHEN NOBODY WAS AROUND, SO I WAITED FOR YOU TO SHOW UP AND I WAS RIGHT!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I ALREADY TALKED TO ALL THE TEACHERS ABOUT IT.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">ARE YOU REALLY DROPPING OUT?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character3</div>
+          <div class="text">I HAVE TO WORK TO PAY OFF MY DEBTS, SO I LEFT OUT WORK.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character4</div>
+          <div class="text">THOUGH I ALREADY HAVE TO BE COMPLETELY HONEST.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character5</div>
+          <div class="text">I DIDN'T THE TEACHER EXPLAIN IT ALREADY? WE HAVE TO PAY OFF OUR DEBTS, SO I LEFT OUT WORK.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character6</div>
+          <div class="text">HE ASKED THEM TO BE HIS SIGNER.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #02: seq_c780ac6d1dbd1242</span>
+      <span class="badge">0 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_c780ac6d1dbd1242/01.png" alt="Page 1">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_c780ac6d1dbd1242/02.png" alt="Page 2">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_c780ac6d1dbd1242/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #03: seq_5303b549f62e9d3f</span>
+      <span class="badge">10 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">2 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_5303b549f62e9d3f/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">THANK YOU FOR EVERYTHING.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">BE SURE TO LOOK AFTER YOURSELF FROM TIME TO TIME.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">6 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_5303b549f62e9d3f/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IF YOU KEEP WORRYING ABOUT OTHERS SO MUCH, YOU MIGHT BE GOING TO LIVE VERY LONG.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DON'T GIVE ME THAT CRAP, YOU IDIOT...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PUTTING ON A FAKE SMILE AND ACTING LIKE YOU'RE FINE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">EVERY LAST ONE OF YOU...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">STOP SPITTING OUT THAT BULLSHIT SO EASILY!!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">BECAUSE I ABSOLUTELY HATE IT WHEN YOU SAY CRAP LIKE THAT!!</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">2 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_5303b549f62e9d3f/03.png" alt="Page 3">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">THINGS LIKE THIS HAPPEN ALL THE TIME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I'VE ALREADY COME TO ACCEPT IT. SO JUST LET IT BE, ALREADY.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #04: seq_d455cfd18edfb0ba</span>
+      <span class="badge">62 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">62 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_d455cfd18edfb0ba/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">FLAP</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">HEADING</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">HEADING</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SLIDE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">BARK! BARK! BARK!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">HACHI-KEN-KUN</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">ARE YOU FEELING BETTER?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">HEY...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">HE'S JUST TOO STUBBORN.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I TOLD HIM NOT TO TALK ABOUT US, BUT YOU KNOW ICHIRO-CHAN.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">THAT'S WHY... HE SAID HE HAS TO DROP OUT TO WORK.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SO LET'S JUST NOT TALK ABOUT THIS ANYMORE.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">OKAY?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">JUST FORGET ABOUT IT.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">LET GO OF THE REINS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I DON'T WANT YOU TO BE BURDENED BY THIS.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_d455cfd18edfb0ba/02.png" alt="Page 2">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_d455cfd18edfb0ba/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #05: seq_e04ef3d20fd0baa8</span>
+      <span class="badge">72 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">3 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e04ef3d20fd0baa8/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AH... AHH...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">4 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e04ef3d20fd0baa8/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">65 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e04ef3d20fd0baa8/03.png" alt="Page 3">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">PLEASE FORGIVE ME.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #06: seq_6aa313a0c0fa1c39</span>
+      <span class="badge">6 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">5 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_6aa313a0c0fa1c39/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">MIZUE-SAMAP</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I'LL...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I'LL DO ANYTHING TO ATONE!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">NOT GOOD!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">EEEE!</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">1 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_6aa313a0c0fa1c39/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">WHAT?!</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_6aa313a0c0fa1c39/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #07: seq_32c47ca11b40ca8a</span>
+      <span class="badge">0 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_32c47ca11b40ca8a/01.png" alt="Page 1">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_32c47ca11b40ca8a/02.png" alt="Page 2">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_32c47ca11b40ca8a/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #08: seq_81b1782990ab7950</span>
+      <span class="badge">58 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">16 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_81b1782990ab7950/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I DID AN INVESTIGATION WITH AKIRA-SAN IN A PLACE LIKE THIS ONCE.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I DESPERATELY STOPPED AKIRA-SAN WHEN SHE SAID 'ONLY ONE DRINK...'</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">HEY...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">WE HAVE TO SUCK IT UP.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">IS NOW SASAKO.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">LEARNED IT FROM A BOOK</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">AND WHAT'S UP WITH YOU, JASSAN?! YOU DID IT ON YOUR OWN!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">ON NUT'S-ENTS LIST!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">THERE ARE TARGETS WITH AN EXTREMELY HIGH LEVEL OF DIFFICULTY.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AND THERE ARE ALSO TARGETS THAT ARE EASY.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">THESE ITEMS...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IT SEEMS OF</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">THAT THEY ARE PERHAPS BEING LINED UP AS THE AUCTION'S OPENING GOODS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">HOWEVER, THERE ARE A CONSIDERABLE NUMBER</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">OF REQUESTS FOR TEENAGE TO 20'S AGED 'FEMALES'.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">42 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_81b1782990ab7950/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SINCE PEOPLE WILL BE LOOKING AT YOUR FACE MORE AMUSING IF YOU HAVE THAT PERSON LOOKING ON, YOU WON'T BE FOUND OUT, SQUAD LEADER.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO YOU FEEL FANCY OUT OF PLACE HERE...?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO YOU FEEL FANCY OUT OF PLACE HERE...?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DO ALL OF US... NO, NO, YOU LOOK CUTE...</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_81b1782990ab7950/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #09: seq_14469aeb38963085</span>
+      <span class="badge">23 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">19 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_14469aeb38963085/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IT LOOKS LIKE THAT PERSON IS GOING TO FOLLOW HER IN LURING OUT ONE PERSON IN THIS PLACE.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">THAT'S BAD.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">THEN NUT WILL PROBABLY LEAVE.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I GET THE FEELING THAT YOU ARE BEING SOFT ON HER...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">YOU GOT SOME REASON FOR THAT?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">SASSAN.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SASSAN.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">WITH THE SUPPORT OF HER LOVER, HER MOTHER STARTED A SHACK BAR AND LEFT HER HUSBAND'S HOUSE.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">HOWEVER, IT SEEMS THAT SHE WAS NOT VERY SKILLED AT MANAGING IT.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">JOINING THE CHEAP-INTUITION CCG ACADEMY JUNIOR SCHOOL.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SAIKO-CHAN AND HER OLDER BROTHER.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SHE DID TERRIBLY IN HER CLASSWORK AND THE PRACTICAL SKILLS SECTION.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">YOU KNOW THAT AS WELL, RIGHT?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">THEY BRING HER GAMES TOO.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">BUT...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I HAVE TO MENTOR SAIKO-CHAN BECAUSE OF MY POSITION, AND OF COURSE, I PLAN TO DO THAT.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IMMEDIATELY AFTER THIS SURGERY, HER MOTHER WHO KNEW ABOUT THE COMPENSATION PAYMENTS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IT SEEMS THAT THE EXPLANATION OF THE RISKS INVOLVED NEVER REACHED HER MOTHER'S EARS...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">...OR SO I HEAR.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">4 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_14469aeb38963085/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">WHILE SHE STILL HAD NO INTENTION OF BECOMING A GHOUL INVESTIGATOR.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AS THE TIME WHEN EVERYONE WOULD CHOOSE THEIR CAREER PATHS APPROACHED.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AMONG THE SIX WHO POSSESS THE 'APTITUDE', SAIKO-CHAN WAS BY FAR THE ONE WITH THE HIGHEST 'APTITUDE'.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">THE QG'S OPERATION APPTITUDE TEST WITH TARGETING THE JUNIORS WAS ENACTED.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_14469aeb38963085/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #10: seq_e9ffbb64217c2fed</span>
+      <span class="badge">10 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">2 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e9ffbb64217c2fed/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I CAN'T HELP BUT THINK HOW IT'D BE</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">FOR SAIKO-CHAN, WHO RECEIVED THE Q'S SURGERY WITHOUT HER OWN VOLITION, WHO BECAME AN INVESTIGATOR WITHOUT ANY INTENTION OF DOING SO.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">4 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e9ffbb64217c2fed/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">TO FORCE ANYMORE THAN THIS ON HER...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">JUST BECAUSE YOU HAVE PARENTS DOESN'T MEAN YOU'LL BE HAPPY, HUH?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">WHAT A HORRIBLE PARENT!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SEEMS WE'VE GOT EITHER OF HIS.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">4 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e9ffbb64217c2fed/03.png" alt="Page 3">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IF SHE'S GOT MONEY PROBLEMS THEN SHE SHOULD WORK AND EARN A LIVING...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">ALL SHE EVER DOES IS LAZE AROUND!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">THAT'S PROBABLY TRUE.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AS FOR TOOTH, HIS WHOLE FAMILY WAS KILLED BY A GHOUL.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #11: seq_316bc7bd43ed6996</span>
+      <span class="badge">105 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">105 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_316bc7bd43ed6996/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SERIOUSLY, THAT HAIR-STYLE IS GREAT!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">I'M RIGHT. SOON FOR SURE, SAKU, YOU'LL BE A WITCH.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">WON'T QUIT.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AHA HAHA!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AHA HAHA!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">???</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_316bc7bd43ed6996/02.png" alt="Page 2">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_316bc7bd43ed6996/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #12: seq_cf7df70d4bba5da5</span>
+      <span class="badge">0 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_cf7df70d4bba5da5/01.png" alt="Page 1">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_cf7df70d4bba5da5/02.png" alt="Page 2">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_cf7df70d4bba5da5/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #13: seq_e456a0394af99570</span>
+      <span class="badge">11 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">10 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e456a0394af99570/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">THE SPIRIT TO CHALLENGE THE YOSHI-OKA...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AND A QUICK TEMPER.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">THAT TOUCHED ME UP, SHARPENED ME UP.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">AND THE RESULT...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">YOU WERE ABLE TO STEP INTO THAT PART OF MY LIFE NICELY, DENSHI-CHIRO.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I LAY RESTLESS FOR 3 DAYS AND 3 NIGHTS.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">YOU'RE HALF A STEP FURTHER AWAY NOW... COMPELLED TO BACK THEN.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IT'S BEEN A YEAR SINCE THEN.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SHALL WE CALL OFF THIS DUEL?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">YOU CANNOT KILL ME.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">1 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e456a0394af99570/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">DENSHI-CHIRO.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">0 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_e456a0394af99570/03.png" alt="Page 3">
+        <div class="empty-note">Empty Page []</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #14: seq_c5622aca7487a661</span>
+      <span class="badge">10 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">4 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_c5622aca7487a661/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">I must keep this distance.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">HAAH.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">CLOSE.</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">Just enough distance so that he can't touch me.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">4 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_c5622aca7487a661/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">My fight is there!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">IT'S REALLY COMING DOWN...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">DOES IT...</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">SAA AAA AAH!</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">2 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_c5622aca7487a661/03.png" alt="Page 3">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">SNOW THIS MUCH EVERY YEAR IN THE CAPITAL?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">CAN'T YOU HEAR IT, DENSHI-CHIRO?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seq-card">
+    <div class="seq-header">
+      <span class="seq-title">Sequence #15: seq_75aeca6c7131544b</span>
+      <span class="badge">6 bubbles transcribed</span>
+    </div>
+    <div class="pages-container">
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 1</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">2 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_75aeca6c7131544b/01.png" alt="Page 1">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">Why don't I end it?</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">STOP RIGHT THERE!</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 2</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">2 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_75aeca6c7131544b/02.png" alt="Page 2">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">IT'S FINE TO RUN AWAY,</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">IF YOU DON'T WANT TO FIGHT THE DUEL.</div>
+        </div>
+      </div>
+
+      <div class="page-box">
+        <div class="page-title">
+          <span>Page 3</span>
+          <span style="color: #94a3b8; font-weight: normal; font-size: 12px;">2 bubbles</span>
+        </div>
+        <img class="img-preview" src="test/images/seq_75aeca6c7131544b/03.png" alt="Page 3">
+
+        <div class="bubble ">
+          <div class="speaker">character1</div>
+          <div class="text">YOU CAN DO IT!</div>
+        </div>
+
+        <div class="bubble ">
+          <div class="speaker">character2</div>
+          <div class="text">A sword is just a sharp tool solely for killing.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
